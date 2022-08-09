@@ -17,3 +17,11 @@ CREATE TABLE sessions (
 	"userId" INTEGER NOT NULL UNIQUE REFERENCES users(id),
 	token TEXT NOT NULL UNIQUE
 );
+
+-- Posts table creation
+ CREATE TABLE posts (
+	id SERIAL PRIMARY KEY,
+	"userId" INTEGER NOT NULL REFERENCES users(id),
+	url TEXT NOT NULL,
+	content TEXT
+);
