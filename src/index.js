@@ -1,15 +1,17 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import signRouters from "./routers/signRouters.js";
+import authRouter from "./routes/authRouter.js";
 
 dotenv.config();
 
-const app = express();
-app.use(cors(), express.json());
+const server = express();
 
-app.use(signRouters);
+server.use(express.json());
+server.use(cors());
 
-app.listen(process.env.PORT, () => {
-  console.log("SERVER RUNNING!");
-});
+server.use(authRouter);
+
+server.listen(process.env.PORT, () =>
+    console.log("Server is listening.")
+);
