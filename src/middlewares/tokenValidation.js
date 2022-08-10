@@ -3,9 +3,10 @@ import sessionsRepository from "../repositories/sessionsRepository.js";
 export async function tokenValidation(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "");
-  const { rows: session } = await sessionsRepository.getSessionByToken(token);
+  const { rows: sessionList } = await sessionsRepository.getSessionByToken(token);
+  const [ session ] = sessionList;
 
-  if (session.length === 0) {
+  if (sessionList.length === 0) {
     return res.sendStatus(401);
   }
 
