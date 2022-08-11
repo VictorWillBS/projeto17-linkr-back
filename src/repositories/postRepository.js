@@ -36,6 +36,8 @@ async function getPostsbyUserId(userId, offSet) {
   return connection.query(`
     SELECT
       posts."userId" AS "userId",
+      users."userName" AS "userName",
+      users.image AS "userImage",
       posts.content AS "postContent",
       posts.url AS url,
       metadatas.title AS "urlTitle",
@@ -44,6 +46,8 @@ async function getPostsbyUserId(userId, offSet) {
     FROM posts
     JOIN metadatas ON
     posts.url = metadatas.url
+    JOIN users ON
+    posts."userId" = users.id
     WHERE "userId" = $1
     ORDER BY posts."createdAt"
     DESC LIMIT 20
