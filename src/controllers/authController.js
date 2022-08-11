@@ -23,7 +23,7 @@ export async function login(req, res) {
 
         const token = uuid();
         
-        if(userSession) {
+        if(usersSession.length > 0) {
             await sessionsRepository.setSessions(token, userSession.id);
             
             res.status(200).send(token);

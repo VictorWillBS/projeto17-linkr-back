@@ -19,11 +19,13 @@ CREATE TABLE sessions (
 );
 
 -- Posts table creation
- CREATE TABLE posts (
-	id SERIAL PRIMARY KEY,
+CREATE TABLE posts (
+	id SERIAL NOT NULL PRIMARY KEY,
 	"userId" INTEGER NOT NULL REFERENCES users(id),
 	url TEXT NOT NULL,
-	content TEXT
+
+	content TEXT,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 --Tags table cration
@@ -37,3 +39,16 @@ CREATE TABLE "tags_Posts"(
 "id" serial PRIMARY KEY NOT NULL UNIQUE,
 "tagId" int NOT NULL REFERENCES "tags"("id") ON DELETE CASCADE ON UPDATE CASCADE,
 "postId" int NOT NULL REFERENCES  "posts"("id")ON DELETE CASCADE ON UPDATE CASCADE)
+
+	
+
+--Metadatas table creation
+CREATE TABLE metadatas (
+	id SERIAL NOT NULL PRIMARY KEY,
+	"postId" INTEGER NOT NULL UNIQUE REFERENCES posts(id),
+	title TEXT NOT NULL,
+	description TEXT NOT NULL,
+	image TEXT NOT NULL,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
