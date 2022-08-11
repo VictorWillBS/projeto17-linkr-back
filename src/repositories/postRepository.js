@@ -60,7 +60,7 @@ async function getPostsbyUserId(userId, offSet) {
 async function getMetadatas() {
   return connection.query(`
     SELECT * FROM metadatas
-  `, [url]);
+  `);
 }
 
 const postRepository = {
