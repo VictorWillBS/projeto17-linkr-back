@@ -20,20 +20,22 @@ async function postPublicationFull(userId, url, content) {
   );
 }
 
-async function postMetadata(url, title, description, image){
-  return connection.query(`
+async function postMetadata(url, title, description, image) {
+  return connection.query(
+    `
     INSERT INTO metadatas (
       url, title, description, image
     ) VALUES (
       $1, $2, $3, $4
     )
-  `, [
-    url, title, description, image
-  ]);
+  `,
+    [url, title, description, image]
+  );
 }
 
 async function getPostsbyUserId(userId, offSet) {
-  return connection.query(`
+  return connection.query(
+    `
     SELECT
       posts."userId" AS "userId",
       users."userName" AS "userName",
@@ -52,9 +54,9 @@ async function getPostsbyUserId(userId, offSet) {
     ORDER BY posts."createdAt"
     DESC LIMIT 20
     OFFSET $2
-  `, [
-    userId, offSet
-  ]);
+  `,
+    [userId, offSet]
+  );
 }
 
 async function getMetadatas() {
@@ -68,7 +70,7 @@ const postRepository = {
   postPublicationFull,
   postMetadata,
   getPostsbyUserId,
-  getMetadatas
+  getMetadatas,
 };
 
 export default postRepository;
