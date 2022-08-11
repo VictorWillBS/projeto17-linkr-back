@@ -25,3 +25,15 @@ CREATE TABLE sessions (
 	url TEXT NOT NULL,
 	content TEXT
 );
+
+--Tags table cration
+CREATE TABLE tags(
+"id" serial PRIMARY KEY NOT NULL UNIQUE,
+"name" text NOT NULL UNIQUE)
+
+
+--Tags_Post table creation
+CREATE TABLE "tags_Posts"(
+"id" serial PRIMARY KEY NOT NULL UNIQUE,
+"tagId" int NOT NULL REFERENCES "tags"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+"postId" int NOT NULL REFERENCES  "posts"("id")ON DELETE CASCADE ON UPDATE CASCADE)
