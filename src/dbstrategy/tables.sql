@@ -26,3 +26,13 @@ CREATE TABLE posts (
 	content TEXT,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+--Metadatas table creation
+CREATE TABLE metadatas (
+	id SERIAL NOT NULL PRIMARY KEY,
+	"postId" INTEGER NOT NULL UNIQUE REFERENCES posts(id),
+	title TEXT NOT NULL,
+	description TEXT NOT NULL,
+	image TEXT NOT NULL,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
