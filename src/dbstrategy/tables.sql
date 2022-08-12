@@ -44,7 +44,7 @@ CREATE TABLE "tags_Posts"(
 --Metadatas table creation
 CREATE TABLE metadatas (
 	id SERIAL NOT NULL PRIMARY KEY,
-	"postId" INTEGER NOT NULL UNIQUE REFERENCES posts(id),
+	url TEXT NOT NULL UNIQUE,
 	title TEXT NOT NULL,
 	description TEXT NOT NULL,
 	image TEXT NOT NULL,
