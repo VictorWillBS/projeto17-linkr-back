@@ -9,8 +9,6 @@ export async function postPublication(req, res) {
     const {
       title, image, description
     } = await urlMetadata(url);
-
-    urlMetadata(url).then((metadata) => console.log(metadata.title));
     
     const {
       rows: metadataList 
