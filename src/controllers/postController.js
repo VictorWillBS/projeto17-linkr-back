@@ -4,7 +4,7 @@ import postRepository from "../repositories/postRepository.js";
 export async function postPublication(req, res) {
   try {
     const { session } = res.locals;
-    const { url, content } = req.body;
+    const { url, content,tags } = req.body;
 
     const {
       title, image, description
@@ -13,7 +13,9 @@ export async function postPublication(req, res) {
     const {
       rows: metadataList 
     } = await postRepository.getMetadatas();
-  
+
+    
+
     if(!metadataList.some(metadata => metadata.url === url)){
       await postRepository.postMetadata(
         url, title, description, image
@@ -25,7 +27,16 @@ export async function postPublication(req, res) {
       return res.sendStatus(201);
     }
 
-    await postRepository.postPublicationFull(session.userId, url, content);
+    const {rows:post} =  await postRepository.postPublicationFull(session.userId, url, content);
+        
+    tags.map(async (tagname)=>{
+      const {rows:tag} = await postRepository.getTagIdByNameTag(tagname)
+      if(!tag.length){
+        await postRepository.postTag(tagname)
+      }
+      await postRepository.postTags_Posts(post[0].id,tagname)
+    }) 
+    
     return res.sendStatus(201);
   } catch(e) {
     res.status(500).send(e);
@@ -33,16 +44,17 @@ export async function postPublication(req, res) {
 }
 
 export async function showPosts(req, res) {
+  
   try {
     const { offset } = req.params;
     const { session } = res.locals;
-
+    
     const {
       rows: userPostList
     } = await postRepository.getPostsbyUserId(session.userId, offset);
-
     res.status(200).send(userPostList);
   } catch(e) {
+    
     res.status(500).send(e);
   }
 }

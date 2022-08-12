@@ -15,6 +15,7 @@ async function postPublicationFull(userId, url, content) {
     `
     INSERT INTO posts ("userId", url, content)
     VALUES ($1, $2, $3)
+    RETURNING id
   `,
     [userId, url, content]
   );
@@ -65,12 +66,36 @@ async function getMetadatas() {
   `);
 }
 
+async function getTagIdByNameTag(name){
+  return connection.query(`
+  SELECT name FROM tags 
+  WHERE "name" =$1
+  `,[name])
+}
+
+async function postTag(name){
+  return connection.query(`
+  INSERT INTO tags
+  ("name") VALUES ($1)
+  `,[name])
+}
+
+async function postTags_Posts(postId,tagName){
+  return connection.query(`
+  INSERT INTO "tags_Posts" ("postId","tagName") 
+  VALUES ($1,$2)
+  `, [postId,tagName])
+}
+
 const postRepository = {
   postPublicationUrl,
   postPublicationFull,
   postMetadata,
   getPostsbyUserId,
   getMetadatas,
+  getTagIdByNameTag,
+  postTag,
+  postTags_Posts,
 };
 
 export default postRepository;
