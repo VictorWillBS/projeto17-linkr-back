@@ -8,8 +8,15 @@ async function getUsersList() {
     `);
 }
 
+async function getUserId(userId) {
+    return connection.query(`
+        SELECT * FROM users WHERE id = $1
+    `, [userId]);
+}
+
 const userRepository = {
-    getUsersList
+    getUsersList,
+    getUserId
 }
 
 export default userRepository;
