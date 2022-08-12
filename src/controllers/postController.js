@@ -34,12 +34,9 @@ export async function postPublication(req, res) {
 
 export async function showPosts(req, res) {
   try {
-    const { offset } = req.params;
-    const { session } = res.locals;
-
     const {
       rows: userPostList
-    } = await postRepository.getPostsbyUserId(session.userId, offset);
+    } = await postRepository.getPosts();
 
     res.status(200).send(userPostList);
   } catch(e) {
