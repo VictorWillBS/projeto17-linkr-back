@@ -13,3 +13,9 @@ export async function getUsers(_, res) {
         res.status(500).send(e);
     }
 }
+
+export async function getUser (req, res) {
+    const { session } = res.locals;
+    const { rows: user } = await userRepository.getUserId(session.userId);
+    res.send(user[0]);
+}
