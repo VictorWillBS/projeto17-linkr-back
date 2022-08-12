@@ -9,10 +9,11 @@ export async function postPublication(req, res) {
     const {
       title, image, description
     } = await urlMetadata(url);
+    
     const {
       rows: metadataList 
     } = await postRepository.getMetadatas();
-
+  
     if(!metadataList.some(metadata => metadata.url === url)){
       await postRepository.postMetadata(
         url, title, description, image

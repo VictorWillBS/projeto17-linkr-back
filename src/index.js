@@ -9,10 +9,10 @@ dotenv.config();
 
 const server = express();
 
-server.get("/teste",async(req,res)=> {
+/*server.get("/teste",async(req,res)=> {
     const {rows:teste }= await connection.query("select * FROM users")
     res.send(teste)
-})
+})*/
 
 server.use(express.json());
 server.use(cors());
