@@ -1,14 +1,15 @@
 import connection from "../dbstrategy/postgres.js";
 
-async function getUsersById(id) {
+async function getUsersList() {
     return connection.query(`
-        SELECT * FROM users
-        WHERE id = $1
-    `, [id]);
+        SELECT
+            id, "userName", image
+        FROM users
+    `);
 }
 
 const userRepository = {
-    getUsersById
+    getUsersList
 }
 
 export default userRepository;
