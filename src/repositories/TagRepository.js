@@ -38,9 +38,11 @@ async function getPostByTag(hashtag){
  `, [hashtag])
 }
 
+
+
 const tagRepository={
     getTagsRepository,
-    getPostByTag
+    getPostByTag,
 };
 
 export default tagRepository;
