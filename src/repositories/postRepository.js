@@ -34,7 +34,7 @@ async function postMetadata(url, title, description, image) {
   );
 }
 
-async function getPostsbyUserId(userId, offSet) {
+async function getPosts() {
   return connection.query(
     `
     SELECT
@@ -43,6 +43,7 @@ async function getPostsbyUserId(userId, offSet) {
       users.image AS "userImage",
       posts.content AS "postContent",
       posts.url AS url,
+      metadatas.id AS "urlId",
       metadatas.title AS "urlTitle",
       metadatas.description AS "urlDescription",
       metadatas.image AS "urlImage"
@@ -51,13 +52,9 @@ async function getPostsbyUserId(userId, offSet) {
     posts.url = metadatas.url
     JOIN users ON
     posts."userId" = users.id
-    WHERE "userId" = $1
     ORDER BY posts."createdAt"
     DESC LIMIT 20
-    OFFSET $2
-  `,
-    [userId, offSet]
-  );
+  `);
 }
 
 async function getMetadatas() {
@@ -91,7 +88,7 @@ const postRepository = {
   postPublicationUrl,
   postPublicationFull,
   postMetadata,
-  getPostsbyUserId,
+  getPosts,
   getMetadatas,
   getTagIdByNameTag,
   postTag,
