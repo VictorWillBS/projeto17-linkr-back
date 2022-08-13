@@ -38,28 +38,53 @@ async function getPosts() {
   return connection.query(
     `
     SELECT
-    posts."id" AS "postId",
-    posts."userId" AS "userId",
-    users."userName" AS "userName",
-    users.image AS "userImage",
-    posts.content AS "postContent",
-    posts.url AS url,
-    metadatas.id AS "urlId",
-    metadatas.title AS "urlTitle",
-    metadatas.description AS "urlDescription",
-    metadatas.image AS "urlImage",
-  JSON_AGG("tags_Posts"."tagName") AS "tags"
-  FROM posts
-  JOIN metadatas ON
-  posts.url = metadatas.url
-  JOIN users ON
-  posts."userId" = users.id
-  LEFT JOIN "tags_Posts" ON
-  posts.id = "tags_Posts"."postId"
-  GROUP BY posts.id,"userName","userImage","urlId","urlTitle","urlDescription","urlImage"
-  ORDER BY posts."createdAt"
-  DESC LIMIT 20
+      posts."id" AS "postId",
+      posts."userId" AS "userId",
+      users."userName" AS "userName",
+      users.image AS "userImage",
+      posts.content AS "postContent",
+      posts.url AS url,
+      metadatas.id AS "urlId",
+      metadatas.title AS "urlTitle",
+      metadatas.description AS "urlDescription",
+      metadatas.image AS "urlImage",
+      JSON_AGG("tags_Posts"."tagName") AS "tags"
+    FROM posts
+    JOIN metadatas ON
+    posts.url = metadatas.url
+    JOIN users ON
+    posts."userId" = users.id
+    LEFT JOIN "tags_Posts" ON
+    posts.id = "tags_Posts"."postId"
+    GROUP BY
+      posts.id,
+      "userName",
+      "userImage",
+      "urlId",
+      "urlTitle",
+      "urlDescription",
+      "urlImage"
+    ORDER BY posts."createdAt"
+    DESC LIMIT 20
   `);
+}
+
+async function setPostsById(id, url, content) {
+  return connection.query(`
+    UPDATE posts SET
+    url = $1
+    content = $2
+    WHERE id = $3
+  `, [
+    url, content, id
+  ])
+}
+
+async function deletePostsById(id) {
+  return connection.query(`
+    DELETE FROM posts
+    WHERE id = $1
+  `, [id])
 }
 
 async function getMetadatas() {
@@ -107,6 +132,8 @@ const postRepository = {
   postTag,
   postTags_Posts,
   getTagsPost,
+  setPostsById,
+  deletePostsById
 };
 
 export default postRepository;
