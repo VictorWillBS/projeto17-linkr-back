@@ -12,7 +12,6 @@ async function getTagsRepository (){
 }
 
 async function getPostByTag(hashtag){
-    console.log("nome tag " + hashtag)
     return await connection.query(
     `SELECT
         posts."userId" AS "userId",
