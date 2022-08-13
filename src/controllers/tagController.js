@@ -14,7 +14,6 @@ export async function showPostByTag(req,res){
     
     try {
         const {rows:postsbyTag} = await tagRepository.getPostByTag(hashtag);
-        console.log(postsbyTag)
         res.status(200).send(postsbyTag);
     } catch(e) {
         res.status(500).send(e);
