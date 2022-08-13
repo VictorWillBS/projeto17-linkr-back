@@ -14,26 +14,29 @@ async function getTagsRepository (){
 async function getPostByTag(hashtag){
     console.log("nome tag " + hashtag)
     return await connection.query(
-    `SELECT
-        posts."userId" AS "userId",
-        users."userName" AS "userName",
-        users.image AS "userImage",
-        posts.content AS "postContent",
-        posts.url AS url,
-        metadatas.title AS "urlTitle",
-        metadatas.description AS "urlDescription",
-        metadatas.image AS "urlImage",
-        "tags_Posts"."tagName" as "tags"
-    FROM posts
-    JOIN metadatas ON
-    posts.url = metadatas.url
-    JOIN users ON
-    posts."userId" = users.id
-    JOIN "tags_Posts" ON 
-    "tags_Posts"."postId" = posts.id
-    WHERE "tags_Posts"."tagName" = $1
-    ORDER BY posts."createdAt"
-    DESC LIMIT 20
+    ` SELECT
+    posts."id" AS "postId",
+    posts."userId" AS "userId",
+    users."userName" AS "userName",
+    users.image AS "userImage",
+    posts.content AS "postContent",
+    posts.url AS url,
+    metadatas.id AS "urlId",
+    metadatas.title AS "urlTitle",
+    metadatas.description AS "urlDescription",
+    metadatas.image AS "urlImage",
+  JSON_AGG("tags_Posts"."tagName") AS "tags"
+  FROM posts
+  JOIN metadatas ON
+  posts.url = metadatas.url
+  JOIN users ON
+  posts."userId" = users.id
+  LEFT JOIN "tags_Posts" ON
+  posts.id = "tags_Posts"."postId"
+  WHERE "tags_Posts"."tagName" = $1
+  GROUP BY posts.id,"userName","userImage","urlId","urlTitle","urlDescription","urlImage"
+  ORDER BY posts."createdAt"
+  DESC LIMIT 20
   
  `, [hashtag])
 }
