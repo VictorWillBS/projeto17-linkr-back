@@ -1,5 +1,7 @@
 export function validateSchema(schema) {
+    
     const value = (req, res, next) => {
+       
         const body = req._body ? req.body : req.params;
         const { error } = schema.validate(body, { abortEarly: false });
 

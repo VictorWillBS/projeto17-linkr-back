@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { tagController } from "../controllers/tagController.js";
+import { getTredingTags,showPostByTag} from "../controllers/tagController.js";
 const tagsRouter = Router();
 
-tagsRouter.get("/tagsTrending", tagController);
-
+tagsRouter.get("/tagsTrending", getTredingTags);
+tagsRouter.get("/hashtag/:hashtag",showPostByTag)
 export default tagsRouter;
