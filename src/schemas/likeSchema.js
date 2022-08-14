@@ -1,8 +1,7 @@
 import joi from "joi";
 
 const likeSchema = joi.object({
-  like: joi.boolean().required(),
-  postIdLike: joi.number().required()
+  userId: joi.number()
 });
 
 export default likeSchema;

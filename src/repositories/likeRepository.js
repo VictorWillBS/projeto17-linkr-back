@@ -1,17 +1,6 @@
 import connection from "../dbstrategy/postgres.js";
 
-// <<<<<<< HEAD
-// async function getAllLikes (postId){
-//   return connection.query(`
-//     SELECT 
-//       likes."postId" as "postId",
-//       "users"."userName"  as "name"
-//     FROM likes
-//     JOIN users ON
-//     "users"."id" = "likes"."userId"
-//     WHERE likes."postId" = $1
-//   `,[postId])
-// }
+
 
 // async function getUserLikes (userId){
 //   return connection.query(`
@@ -37,20 +26,7 @@ import connection from "../dbstrategy/postgres.js";
 //   `,[postId,userId])
 // }
 
-// async function postLike (postId,userId){
-//   return connection.query(`
-//     INSERT INTO likes
-//     (postId,userId) 
-//     VALUES ($1,$2)
-//   `,[postId,userId])
-// }
 
-// async function deleteLike (postId,userId){
-//   return connection.query(`
-//     DELETE likes
-//     WHERE likes."postId" = $1 and "likes"."userId"=$2
-//   `,[postId,userId])
-// }
 
 // const likeRepository = {
 //     getAllLikes,
@@ -60,26 +36,33 @@ import connection from "../dbstrategy/postgres.js";
 //     deleteLike
 // }
 
-// export default likeRepository
-// =======
-async function addLike(postIdLike, userIdLIke) {
-  return connection.query(
-    `
-    INSERT INTO likes ("postIdLike", "userIdLike")
-    VALUES ($1, $2)
-  `,
-    [postIdLike, userIdLIke]
-  );
+async function getAllLikes (postId){
+  return connection.query(`
+    SELECT 
+      likes."postId" as "postId",
+      "users"."userName"  as "name",
+      "users"."id" as "userId"
+    FROM likes
+    JOIN users ON
+    "users"."id" = "likes"."userId"
+    WHERE likes."postId" = $1
+  `,[postId]);
 }
 
-async function deleteLike(postIdLike, userIdLike) {
-  return connection.query(
-    `
-    DELETE FROM likes
-    WHERE "postIdLike" = $1 AND "userIdLike" = $2
-  `,
-    [postIdLike, userIdLike]
-  );
+async function postLike (postId,userId){
+  console.log(`post ${postId}\nuser ${userId}` )
+  return connection.query(`
+  INSERT INTO likes
+  ("postId","userId") 
+  VALUES ($1,$2)
+  `,[postId,userId]);
+}
+
+async function deleteLike (postId,userId){
+  return connection.query(`
+   DELETE FROM likes
+   WHERE likes."postId" = $1 and "likes"."userId"=$2
+  `,[postId,userId]);
 }
 
 async function getLike(postIdLike, userIdLike) {
@@ -104,11 +87,12 @@ async function getLikePostId(postLikeId) {
 }
 
 const likeRepository = {
-  addLike,
+  getAllLikes,
+  postLike,
   deleteLike,
   getLike,
   getLikePostId,
 };
 
 export default likeRepository;
-// >>>>>>> 85ecc916c2e47984ddb46471bf2a70bc9388cdff
+

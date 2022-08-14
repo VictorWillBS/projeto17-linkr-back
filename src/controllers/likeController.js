@@ -1,16 +1,8 @@
-// <<<<<<< HEAD
+import likeRepository from "../repositories/likeRepository.js";
+
 // import likeRepository from "../repositories/likeRepository";
 
-// export async function allLikes(req,res){
-//   const {postId}=req.params
-//   try {
-//     const {rows:allLikes} = await likeRepository.getAllLikes(postId)
-//     res.status(200).send(allLikes)
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
 
-// }
 
 // export async function allUserLikes(req,res){
 //   const {userId}=req.params
@@ -22,32 +14,43 @@
 //   }
 // }
 
-// export async function postLike(req,res){
-//   const {postId}=req.params
-//   const {userId}=req.body
-//   try {
-//     await likeRepository.postLike(postId,userId)
-//     res.status(201).send()
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// }
+export async function allLikes(req,res){
+  const {postId}=req.params
+  try {
+    const {rows:allLikes} = await likeRepository.getAllLikes(postId)
+    res.status(200).send(allLikes)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 
-// export async function deleteLike(req,res){
-//   const {postId}=req.params
-//   const {userId}=req.body
-//   try {
-//     await likeRepository.deleteLike(postId,userId)
-//     res.status(200).send()
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// }
-// =======
-import likeRepository from "../repositories/likeRepository.js";
+}
+
+export async function postLike(req,res){
+  const {postId}=req.params
+  const {userId}=req.body
+  try {
+    await likeRepository.postLike(postId,userId)
+    res.status(201).send()
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+export async function deleteLike(req,res){
+  const {postId,userId}=req.params
+    try {
+    await likeRepository.deleteLike(postId,userId)
+    res.status(200).send()
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+
 
 export async function like(req, res) {
-  const { postIdLike, like } = req.body;
+  const {postId} = req.params
+  const { userId } = req.body;
   const { session } = res.locals;
   const userIdLike = session.userId;
 
@@ -80,4 +83,4 @@ export async function getLikes(req, res) {
     return res.status(500).send(error);
   }
 }
-// >>>>>>> 85ecc916c2e47984ddb46471bf2a70bc9388cdff
+

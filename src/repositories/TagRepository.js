@@ -14,6 +14,7 @@ async function getTagsRepository (){
 async function getPostByTag(hashtag){
     return await connection.query(
     `SELECT
+        posts."id" AS "postId",
         posts."userId" AS "userId",
         users."userName" AS "userName",
         users.image AS "userImage",
@@ -34,7 +35,7 @@ async function getPostByTag(hashtag){
     ORDER BY posts."createdAt"
     DESC LIMIT 20
   
- `, [hashtag])
+ `, [hashtag]);
 }
 
 
