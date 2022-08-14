@@ -75,6 +75,16 @@ export async function editPosts(req, res) {
 
     await postRepository.setPostsById(body.postId, body.content);
 
+    if(body.tags) {
+      body.tags.map(async (tagname)=>{
+        const {rows:tag} = await postRepository.getTagIdByNameTag(tagname)
+        if(!tag.length){
+          await postRepository.postTag(tagname)
+        }
+        await postRepository.postTags_Posts(body.postId, tagname)
+      })
+    }
+
     res.sendStatus(200);
   } catch(e) {
     res.status(500).send(e);
