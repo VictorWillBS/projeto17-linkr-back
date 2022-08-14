@@ -6,7 +6,7 @@ export async function tokenValidation(req, res, next) {
   const token = authorization?.replace("Bearer ", "");
   const { rows: sessionList } = await sessionsRepository.getSessionByToken(token);
   const [ session ] = sessionList;
-  if (sessionList.length === 0) {
+  if (!sessionList.length) {
     return res.sendStatus(401);
   }
 

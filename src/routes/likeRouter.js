@@ -17,7 +17,7 @@ import likeSchema from "../schemas/likeSchema.js";
 
 const router = Router();
 router.delete("/like/:postId/:userId", deleteLike);
-router.post("/like/:postId", validateSchema(likeSchema), tokenValidation, postLike);
+router.post("/like/:postId", validateSchema(likeSchema), postLike);
 router.get("/like/:postId", allLikes);
 
 export default router;
