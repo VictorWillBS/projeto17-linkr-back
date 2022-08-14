@@ -69,22 +69,21 @@ async function getPosts() {
   `);
 }
 
-async function setPostsById(id, url, content) {
+async function setPostsById(id, content) {
   return connection.query(`
     UPDATE posts SET
-    url = $1
-    content = $2
-    WHERE id = $3
+    content = $1
+    WHERE id = $2
   `, [
-    url, content, id
-  ])
+    content, id
+  ]);
 }
 
 async function deletePostsById(id) {
   return connection.query(`
     DELETE FROM posts
     WHERE id = $1
-  `, [id])
+  `, [id]);
 }
 
 async function getMetadatas() {
