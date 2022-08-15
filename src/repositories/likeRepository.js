@@ -1,41 +1,5 @@
 import connection from "../dbstrategy/postgres.js";
 
-
-
-// async function getUserLikes (userId){
-//   return connection.query(`
-//     SELECT 
-//       likes."postId" as "postId",
-//       "users"."userName"  as "name"
-//     FROM likes
-//     JOIN users ON
-//     "users"."id" = "likes"."userId"
-//     WHERE "likes"."userId"= $1
-//   `,[userId])
-// }
-
-// async function verifyUserLikedPost (postId,userId){
-//   return connection.query(`
-//   SELECT 
-//   likes."postId" as "postId",
-//   "users"."userName"  as "name"
-// FROM likes
-// JOIN users ON
-// "users"."id" = "likes"."userId"
-// WHERE likes."postId" = $1 and "likes"."userId"=$2
-//   `,[postId,userId])
-// }
-
-
-
-// const likeRepository = {
-//     getAllLikes,
-//     getUserLikes,
-//     verifyUserLikedPost,
-//     postLike,
-//     deleteLike
-// }
-
 async function getAllLikes (postId){
   return connection.query(`
     SELECT 
@@ -50,7 +14,6 @@ async function getAllLikes (postId){
 }
 
 async function postLike (postId,userId){
-  console.log(`post ${postId}\nuser ${userId}` )
   return connection.query(`
   INSERT INTO likes
   ("postIdLike","userIdLike") 

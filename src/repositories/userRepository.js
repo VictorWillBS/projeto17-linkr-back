@@ -41,7 +41,7 @@ async function getUserPosts(userId){
         posts.url = metadatas.url
         JOIN users ON
         posts."userId" = users.id
-        JOIN "tags_Posts" ON 
+        LEFT JOIN "tags_Posts" ON 
         "tags_Posts"."postId" = posts.id
         WHERE posts."userId" = $1
         ORDER BY posts."createdAt"

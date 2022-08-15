@@ -8,5 +8,5 @@ userRouter.get("/users", getUsers);
 userRouter.get("/user", tokenValidation, getUser);
 userRouter.get("/user/token",getUserbyToken )
 userRouter.get("/user/:id",  tokenValidation,getUserbyId);
-userRouter.get("/user/posts/:id", tokenValidation,getUserPosts)
+userRouter.get("/user/posts/:id", tokenValidation,getUserPosts);
 export default userRouter;
