@@ -19,3 +19,25 @@ export async function getUser (req, res) {
     const { rows: user } = await userRepository.getUserId(session.userId);
     res.send(user[0]);
 }
+
+export async function getUserbyToken (req, res) {
+    const { token } = req.body;
+    const { rows: user } = await userRepository.getUserIsdbyToken(token);
+    res.send(user[0]);
+}
+
+export async function getUserbyId (req, res) {
+    const { id } = req.params;
+    const { rows: user } = await userRepository.getUserId(id);
+    res.send(user[0]);
+}
+
+export async function getUserPosts(req, res) {
+    try {
+        const {id}=req.params
+        const { rows: userPosts}= await userRepository.getUserPosts(id)
+        res.status(200).send(userPosts);
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
