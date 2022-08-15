@@ -1,59 +1,22 @@
 import connection from "../dbstrategy/postgres.js";
 
-
-
-// async function getUserLikes (userId){
-//   return connection.query(`
-//     SELECT 
-//       likes."postId" as "postId",
-//       "users"."userName"  as "name"
-//     FROM likes
-//     JOIN users ON
-//     "users"."id" = "likes"."userId"
-//     WHERE "likes"."userId"= $1
-//   `,[userId])
-// }
-
-// async function verifyUserLikedPost (postId,userId){
-//   return connection.query(`
-//   SELECT 
-//   likes."postId" as "postId",
-//   "users"."userName"  as "name"
-// FROM likes
-// JOIN users ON
-// "users"."id" = "likes"."userId"
-// WHERE likes."postId" = $1 and "likes"."userId"=$2
-//   `,[postId,userId])
-// }
-
-
-
-// const likeRepository = {
-//     getAllLikes,
-//     getUserLikes,
-//     verifyUserLikedPost,
-//     postLike,
-//     deleteLike
-// }
-
 async function getAllLikes (postId){
   return connection.query(`
     SELECT 
-      likes."postId" as "postId",
+      likes."postIdLike" as "postId",
       "users"."userName"  as "name",
       "users"."id" as "userId"
     FROM likes
     JOIN users ON
-    "users"."id" = "likes"."userId"
-    WHERE likes."postId" = $1
+    "users"."id" = "likes"."userIdLike"
+    WHERE likes."postIdLike" = $1
   `,[postId]);
 }
 
 async function postLike (postId,userId){
-  console.log(`post ${postId}\nuser ${userId}` )
   return connection.query(`
   INSERT INTO likes
-  ("postId","userId") 
+  ("postIdLike","userIdLike") 
   VALUES ($1,$2)
   `,[postId,userId]);
 }
@@ -61,7 +24,7 @@ async function postLike (postId,userId){
 async function deleteLike (postId,userId){
   return connection.query(`
    DELETE FROM likes
-   WHERE likes."postId" = $1 and "likes"."userId"=$2
+   WHERE likes."postIdLike" = $1 and "likes"."userIdLike"=$2
   `,[postId,userId]);
 }
 

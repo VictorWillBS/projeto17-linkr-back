@@ -1,21 +1,8 @@
 import likeRepository from "../repositories/likeRepository.js";
 
-// import likeRepository from "../repositories/likeRepository";
-
-
-
-// export async function allUserLikes(req,res){
-//   const {userId}=req.params
-//   try {
-//     const {rows:allUserLikes} = await likeRepository.getAllLikes(userId)
-//     res.status(200).send(allUserLikes)
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// }
-
 export async function allLikes(req,res){
   const {postId}=req.params
+
   try {
     const {rows:allLikes} = await likeRepository.getAllLikes(postId)
     res.status(200).send(allLikes)
@@ -56,8 +43,8 @@ export async function like(req, res) {
 
   try {
     const { rows: likes } = await likeRepository.getLike(
-      postIdLike,
-      userIdLike
+      postId,
+      userId
     );
     if (likes.length !== 0 && like) {
       return res.sendStatus(200);
