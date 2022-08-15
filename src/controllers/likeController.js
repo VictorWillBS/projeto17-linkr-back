@@ -16,6 +16,7 @@ import likeRepository from "../repositories/likeRepository.js";
 
 export async function allLikes(req,res){
   const {postId}=req.params
+  console.log(postId);
   try {
     const {rows:allLikes} = await likeRepository.getAllLikes(postId)
     res.status(200).send(allLikes)
