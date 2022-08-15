@@ -57,13 +57,17 @@ async function getPosts() {
     LEFT JOIN "tags_Posts" ON
     posts.id = "tags_Posts"."postId"
     GROUP BY
-      posts.id,
-      "userName",
-      "userImage",
-      "urlId",
-      "urlTitle",
-      "urlDescription",
-      "urlImage"
+      posts."id",
+      posts."userId",
+      users."userName",
+      users.image,
+      posts.content,
+      posts.url,
+      metadatas.id,
+      metadatas.title,
+      metadatas.description,
+      metadatas.image,
+	  posts."createdAt"
     ORDER BY posts."createdAt"
     DESC LIMIT 20
   `);

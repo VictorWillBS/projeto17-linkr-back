@@ -6,7 +6,7 @@ async function getTagsRepository (){
     FROM "tags_Posts" 
     JOIN tags 
     ON tags.name= "tags_Posts"."tagName"  
-    GROUP BY tags.id
+    GROUP BY tags.id, name
     ORDER BY "totalPosts" DESC
     LIMIT 10`)
 }
