@@ -56,3 +56,11 @@ CREATE TABLE likes (
 	"postIdLike" INTEGER NOT NULL REFERENCES posts(id),
 	"userIdLike" INTEGER NOT NULL REFERENCES users(id)
 );
+
+--Comments table creation
+CREATE TABLE comments (
+	id SERIAL PRIMARY KEY,
+	content TEXT NOT NULL,
+	"userId" INTEGER NOT NULL REFERENCES users(id),
+	"postId" INTEGER NOT NULL REFERENCES posts(id)
+);
