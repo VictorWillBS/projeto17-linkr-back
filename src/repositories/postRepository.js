@@ -77,7 +77,7 @@ async function getPosts(offset) {
       metadatas.image,
 	  posts."createdAt"
     ORDER BY posts."createdAt"
-    DESC LIMIT 20
+    DESC LIMIT 10
     ${offSetParams}
   `);
 }
