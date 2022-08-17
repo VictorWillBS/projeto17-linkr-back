@@ -12,3 +12,13 @@ export async function postComment(req, res) {
     return res.status(500).send(error);
   }
 }
+
+export async function getCountComment(req, res) {
+  const { postId } = req.body;
+  try {
+    const { rows: data } = await commentRepository.getCountCommentById(postId);
+    return res.send(data[0]);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
