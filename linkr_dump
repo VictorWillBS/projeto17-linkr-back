@@ -21,6 +21,42 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.comments (
+    id integer NOT NULL,
+    content text NOT NULL,
+    "userId" integer NOT NULL,
+    "postId" integer NOT NULL
+);
+
+
+ALTER TABLE public.comments OWNER TO postgres;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO postgres;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
 -- Name: likes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -273,6 +309,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
 -- Name: likes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -322,12 +365,21 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.comments (id, content, "userId", "postId") FROM stdin;
+1	HAHAHAHAHA	4	9
+2	lklklk	2	32
+\.
+
+
+--
 -- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.likes (id, "userIdLike", "postIdLike") FROM stdin;
 1	3	30
-2	3	29
 4	3	18
 5	3	17
 6	3	16
@@ -338,6 +390,8 @@ COPY public.likes (id, "userIdLike", "postIdLike") FROM stdin;
 17	2	29
 18	2	30
 19	2	20
+26	3	29
+29	3	28
 \.
 
 
@@ -362,6 +416,7 @@ COPY public.metadatas (id, url, title, description, image, "createdAt") FROM std
 14	https://www.youtube.com/watch?v=XFKzwL6Vbp8&ab_channel=CBLOL	FURIA 1 x 0 paiN Gaming | CBLOL 2022: 2ª Etapa - Playoffs - Md5	CBLOL 2022: 2ª Etapa acontece de 11 de Junho a 03 de Setembro com transmissões AO VIVO no YouTube e Twitch de CBLOL às 13h (Horário de Brasília).Curtiu? Insc...	https://i.ytimg.com/vi/XFKzwL6Vbp8/maxresdefault_live.jpg	2022-08-13 14:23:46.119725
 15	https://www.w3schools.com/html/default.asp	HTML Tutorial	W3Schools offers free online tutorials, references and exercises in all the major languages of the web. Covering popular subjects like HTML, CSS, JavaScript, Python, SQL, Java, and many, many more.	https://www.w3schools.com/images/w3schools_logo_436_2.png	2022-08-14 02:41:19.678881
 16	https://www.npmjs.com/package/react-debounce-input	react-debounce-input	React component that renders Input with debounced onChange. Latest version: 3.3.0, last published: 2 months ago. Start using react-debounce-input in your project by running `npm i react-debounce-input`. There are 152 other projects in the npm registry using react-debounce-input.	https://static.npmjs.com/338e4905a2684ca96e08c7780fc68412.png	2022-08-15 13:31:24.900201
+17	https://www.youtube.com/watch?v=o50J2xg8-sU	Negro Drama	Provided to YouTube by ONErpmNegro Drama · Racionais Mc's · Mano BrownNada Como um Dia Após o Outro Dia, Vol. 1 & 2℗ Cosa NostraReleased on: 2002-10-07Auto-...	https://i.ytimg.com/vi/o50J2xg8-sU/maxresdefault.jpg	2022-08-16 22:08:30.31108
 \.
 
 
@@ -392,6 +447,7 @@ COPY public.posts (id, "userId", url, content, "createdAt") FROM stdin;
 30	4	https://www.npmjs.com/package/react-debounce-input	#debounce	2022-08-15 13:44:49.102681
 16	2	https://vidafullstack.com.br/javascript/foreach-map-filter-find-every-some-reduce-com-javascript/	Como usar os métodos de busca em um array, map(), filter(), forEach(), some(), find()	2022-08-12 01:20:42.579523
 32	3	https://www.npmjs.com/package/react-debounce-input	#debounce Mais outra hashtag #paz	2022-08-15 15:32:34.120703
+33	2	https://www.youtube.com/watch?v=o50J2xg8-sU	Nego drama, entre o sucesso e a lama	2022-08-16 22:08:30.315616
 \.
 
 
@@ -407,8 +463,8 @@ COPY public.sessions (id, "userId", token) FROM stdin;
 7	6	5a6a8492-c745-48c4-840e-9432cc873e94
 1	1	235e700d-d58f-4b3e-b15c-3f982e050b09
 9	8	8a869643-c55a-4ed2-8ac0-87a37e37714b
-2	2	e9e5e0a5-2789-4ad3-bd88-7b313395909f
-3	3	f9a62fa1-d505-4801-8ad5-e4f1afe01e64
+3	3	d87c632f-997e-4250-82d2-cfd85737acd0
+2	2	7f1601a9-506a-418a-8246-37264fa37035
 \.
 
 
@@ -428,6 +484,7 @@ COPY public.tags (id, name) FROM stdin;
 9	#debounce
 10	post
 11	debounce
+12	morro
 \.
 
 
@@ -459,28 +516,36 @@ COPY public.users (id, email, password, "userName", image, "createdAt") FROM std
 7	paulin@bacana3.com	$2b$10$UrR2m4eEZ2hnFpabX.NcduhtEuEcl3kfLV/F2DRa9.Xm.zcs9Ensa	Paulin Bacana	https://i.ytimg.com/vi/w1EydyN2Lgw/hqdefault.jpg	2022-08-12 01:42:53.658999
 8	birimbinha@email.com	$2b$10$kCtP06q1Z1eDc6crSTQEHO3UsY2b3zdkFDzyzlOcF5gtywhQ.nco6	Birimbinha	https://media.comicbook.com/2021/08/my-hero-academia-bakugo-1278176.jpeg?auto=webp&width=1200&height=628&crop=1200:628,smart	2022-08-13 14:20:51.097736
 9	master@puppets.com	$2b$10$UsOg1VVs0/NRQYxVRS8W3.k6nhvmzqUvxC4q5gy4hzvOAPo5JlLgO	Master	https://www.metalsucks.net/wp-content/uploads/2022/07/Metallica-Master-of-Puppets-Lyric-Video-Header-1280x720.jpg	2022-08-13 21:35:15.08177
+10	email@email.com	$2b$10$1imR/BgU6FcSYHv0u7O43eLWjgHps9huNPrX0TlOtoWc/o6xTsFsC	Email	https://i.ytimg.com/vi/TT3RhKj_YQM/hqdefault.jpg	2022-08-15 16:21:18.773401
 \.
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.comments_id_seq', 2, true);
 
 
 --
 -- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.likes_id_seq', 19, true);
+SELECT pg_catalog.setval('public.likes_id_seq', 29, true);
 
 
 --
 -- Name: metadatas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metadatas_id_seq', 16, true);
+SELECT pg_catalog.setval('public.metadatas_id_seq', 17, true);
 
 
 --
 -- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.posts_id_seq', 32, true);
+SELECT pg_catalog.setval('public.posts_id_seq', 35, true);
 
 
 --
@@ -494,21 +559,29 @@ SELECT pg_catalog.setval('public.sessions_id_seq', 10, true);
 -- Name: tags_Posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tags_Posts_id_seq"', 23, true);
+SELECT pg_catalog.setval('public."tags_Posts_id_seq"', 24, true);
 
 
 --
 -- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tags_id_seq', 11, true);
+SELECT pg_catalog.setval('public.tags_id_seq', 12, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 9, true);
+SELECT pg_catalog.setval('public.users_id_seq', 10, true);
+
+
+--
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -605,6 +678,22 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments comments_postId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT "comments_postId_fkey" FOREIGN KEY ("postId") REFERENCES public.posts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: comments comments_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT "comments_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
