@@ -10,10 +10,11 @@ export async function getTredingTags (req,res) {
 }
 
 export async function showPostByTag(req,res){
-    const {hashtag} = req.params 
-    
+    const {hashtag} = req.params;
+    const { offset } = req.params;
+
     try {
-        const {rows:postsbyTag} = await tagRepository.getPostByTag(hashtag);
+        const {rows:postsbyTag} = await tagRepository.getPostByTag(hashtag, offset);
         res.status(200).send(postsbyTag);
     } catch(e) {
         res.status(500).send(e);
