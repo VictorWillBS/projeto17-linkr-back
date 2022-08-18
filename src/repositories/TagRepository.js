@@ -11,7 +11,7 @@ async function getTagsRepository (){
     LIMIT 10`)
 }
 
-async function getPostByTag(hashtag){
+async function getPostByTag(hashtag, offset){
     return await connection.query(
     `SELECT
         posts."id" AS "postId",
@@ -33,9 +33,9 @@ async function getPostByTag(hashtag){
     "tags_Posts"."postId" = posts.id
     WHERE "tags_Posts"."tagName" = $1
     ORDER BY posts."createdAt"
-    DESC LIMIT 20
-  
- `, [hashtag]);
+    DESC LIMIT 10
+    OFFSET $2
+ `, [hashtag, offset]);
 }
 
 

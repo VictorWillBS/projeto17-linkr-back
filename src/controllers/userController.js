@@ -34,8 +34,9 @@ export async function getUserbyId (req, res) {
 
 export async function getUserPosts(req, res) {
     try {
-        const {id}=req.params
-        const { rows: userPosts}= await userRepository.getUserPosts(id)
+        const {id}=req.params;
+        const { offset } = req.params;
+        const { rows: userPosts}= await userRepository.getUserPosts(id, offset);
         res.status(200).send(userPosts);
     } catch(e) {
         res.status(500).send(e);

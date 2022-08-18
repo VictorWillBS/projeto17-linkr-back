@@ -23,7 +23,7 @@ async function getUserIdByToken(token) {
     `, [token]);
 }
 
-async function getUserPosts(userId){
+async function getUserPosts(userId, offset){
     return await connection.query(
         `SELECT
             posts."id" AS "postId",
@@ -45,9 +45,9 @@ async function getUserPosts(userId){
         "tags_Posts"."postId" = posts.id
         WHERE posts."userId" = $1
         ORDER BY posts."createdAt"
-        DESC LIMIT 20
-      
-     `, [userId])
+        DESC LIMIT 10
+        OFFSET $2
+     `, [userId, offset])
 }
 
 const userRepository = {
