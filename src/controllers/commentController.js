@@ -22,3 +22,15 @@ export async function getCountComment(req, res) {
     return res.status(500).send(error);
   }
 }
+
+export async function allCommentsById(req, res) {
+  const { postId } = req.body;
+  try {
+    const { rows: comments } = await commentRepository.getAllCommentsById(
+      postId
+    );
+    return res.send(comments);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
