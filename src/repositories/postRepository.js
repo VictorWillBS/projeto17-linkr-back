@@ -34,7 +34,15 @@ async function postMetadata(url, title, description, image) {
   );
 }
 
-async function getPosts() {
+async function getPosts(offset) {
+  let offSetParams;
+
+  if(offset){
+    offSetParams = `OFFSET ${offset}`;
+  } else {
+    offSetParams = '';
+  }
+
   return connection.query(
     `
     SELECT
@@ -69,7 +77,8 @@ async function getPosts() {
       metadatas.image,
 	  posts."createdAt"
     ORDER BY posts."createdAt"
-    DESC LIMIT 20
+    DESC LIMIT 10
+    ${offSetParams}
   `);
 }
 

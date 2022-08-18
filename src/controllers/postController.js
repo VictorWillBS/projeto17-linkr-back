@@ -56,6 +56,20 @@ export async function showPosts(req, res) {
   }
 }
 
+export async function showPostsOffset(req, res) {
+  try {
+    const { offset } = req.params;
+
+    const {
+      rows: userPostList
+    } = await postRepository.getPosts(offset);
+
+    res.status(200).send(userPostList);
+  } catch(e) {
+    res.status(500).send(e);
+  }
+}
+
 export async function editPosts(req, res) {
   try {
     const { session } = res.locals;
