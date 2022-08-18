@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  allCommentsById,
   getCountComment,
   postComment
 } from "../controllers/commentController.js";
@@ -21,6 +22,13 @@ router.post(
   validateSchema(getCountCommentSchema),
   tokenValidation,
   getCountComment
+);
+
+router.post(
+  "/commentsId",
+  validateSchema(getCountCommentSchema),
+  tokenValidation,
+  allCommentsById
 );
 
 export default router;

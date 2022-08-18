@@ -21,9 +21,21 @@ async function getCountCommentById(postId) {
   );
 }
 
+async function getAllCommentsById(postId) {
+  return connection.query(
+    `
+    SELECT users."userName", users.image, comments.* FROM comments
+    JOIN users ON comments."userId" = users.id
+    WHERE comments."postId" = $1 ORDER BY comments.id ASC
+  `,
+    [postId]
+  );
+}
+
 const commentRepository = {
   postComment,
   getCountCommentById,
+  getAllCommentsById,
 };
 
 export default commentRepository;
