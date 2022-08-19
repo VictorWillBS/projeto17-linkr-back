@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1)
--- Dumped by pg_dump version 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1)
+-- Dumped from database version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -54,6 +54,41 @@ ALTER TABLE public.comments_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.followers (
+    id integer NOT NULL,
+    "followerId" integer NOT NULL,
+    "followingId" integer NOT NULL
+);
+
+
+ALTER TABLE public.followers OWNER TO postgres;
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.followers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.followers_id_seq OWNER TO postgres;
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.followers_id_seq OWNED BY public.followers.id;
 
 
 --
@@ -316,6 +351,13 @@ ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.com
 
 
 --
+-- Name: followers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.followers ALTER COLUMN id SET DEFAULT nextval('public.followers_id_seq'::regclass);
+
+
+--
 -- Name: likes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -371,6 +413,25 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 COPY public.comments (id, content, "userId", "postId") FROM stdin;
 1	HAHAHAHAHA	4	9
 2	lklklk	2	32
+3	hahaha	3	36
+4	kkkk	2	36
+5	lklklk	2	36
+6	boa	3	36
+\.
+
+
+--
+-- Data for Name: followers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.followers (id, "followerId", "followingId") FROM stdin;
+1	3	8
+2	8	3
+3	4	9
+5	2	1
+16	2	4
+18	2	6
+19	2	8
 \.
 
 
@@ -392,6 +453,8 @@ COPY public.likes (id, "userIdLike", "postIdLike") FROM stdin;
 19	2	20
 26	3	29
 29	3	28
+30	2	33
+31	2	36
 \.
 
 
@@ -417,6 +480,7 @@ COPY public.metadatas (id, url, title, description, image, "createdAt") FROM std
 15	https://www.w3schools.com/html/default.asp	HTML Tutorial	W3Schools offers free online tutorials, references and exercises in all the major languages of the web. Covering popular subjects like HTML, CSS, JavaScript, Python, SQL, Java, and many, many more.	https://www.w3schools.com/images/w3schools_logo_436_2.png	2022-08-14 02:41:19.678881
 16	https://www.npmjs.com/package/react-debounce-input	react-debounce-input	React component that renders Input with debounced onChange. Latest version: 3.3.0, last published: 2 months ago. Start using react-debounce-input in your project by running `npm i react-debounce-input`. There are 152 other projects in the npm registry using react-debounce-input.	https://static.npmjs.com/338e4905a2684ca96e08c7780fc68412.png	2022-08-15 13:31:24.900201
 17	https://www.youtube.com/watch?v=o50J2xg8-sU	Negro Drama	Provided to YouTube by ONErpmNegro Drama · Racionais Mc's · Mano BrownNada Como um Dia Após o Outro Dia, Vol. 1 & 2℗ Cosa NostraReleased on: 2002-10-07Auto-...	https://i.ytimg.com/vi/o50J2xg8-sU/maxresdefault.jpg	2022-08-16 22:08:30.31108
+18	https://youtu.be/zSn1IrH8EF4	AQUI TEM É JESUS	DÁ MEMBRO PRO PAPO OTARIO DÁAJUDE O PAPO OTÁRIO NACIONAL PIX: papootcontato@gmail.com  E-mail:papootcontato@gmail.com	https://i.ytimg.com/vi/zSn1IrH8EF4/maxresdefault.jpg	2022-08-17 16:55:38.607895
 \.
 
 
@@ -436,6 +500,7 @@ COPY public.posts (id, "userId", url, content, "createdAt") FROM stdin;
 17	7	https://www.facebook.com/cjoshitposter/videos/paulin-bacana-3/640203956929060/	Paulinho BACANA 3!!!	2022-08-12 01:45:09.567501
 20	8	https://www.youtube.com/watch?v=fmF7Ngy2DWY&ab_channel=tchakabumoficial	HAHAAHAH #explosão tckahbum	2022-08-13 14:23:00.230985
 21	8	https://www.youtube.com/watch?v=XFKzwL6Vbp8&ab_channel=CBLOL	CBLOL ao vivo, não tem hashtag	2022-08-13 14:23:46.124038
+36	2	https://youtu.be/zSn1IrH8EF4	#Jesus	2022-08-17 16:55:38.615364
 18	3	https://bootcampra.notion.site/Projeto-17-Linkr-a135fca732e04f67ade8d110c717dc73	Eu estou #ProntoPraSofrerSegundaFeira	2022-08-13 03:00:52.459125
 23	4	https://www.npmjs.com/package/react-debounce-input	#debounce	2022-08-15 13:31:24.905932
 24	4	https://www.npmjs.com/package/react-debounce-input	#debounce	2022-08-15 13:32:08.179959
@@ -463,8 +528,8 @@ COPY public.sessions (id, "userId", token) FROM stdin;
 7	6	5a6a8492-c745-48c4-840e-9432cc873e94
 1	1	235e700d-d58f-4b3e-b15c-3f982e050b09
 9	8	8a869643-c55a-4ed2-8ac0-87a37e37714b
-3	3	d87c632f-997e-4250-82d2-cfd85737acd0
-2	2	7f1601a9-506a-418a-8246-37264fa37035
+3	3	a514d704-e47e-4cc7-b061-a0b67fa3c0ea
+2	2	24584f6f-4e00-4a16-a48f-0a225e9b271b
 \.
 
 
@@ -485,6 +550,7 @@ COPY public.tags (id, name) FROM stdin;
 10	post
 11	debounce
 12	morro
+13	Jesus
 \.
 
 
@@ -499,6 +565,7 @@ COPY public."tags_Posts" (id, "tagName", "postId") FROM stdin;
 21	debounce	32
 22	debounce	32
 23	paz	32
+25	Jesus	36
 \.
 
 
@@ -524,28 +591,35 @@ COPY public.users (id, email, password, "userName", image, "createdAt") FROM std
 -- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.comments_id_seq', 2, true);
+SELECT pg_catalog.setval('public.comments_id_seq', 6, true);
+
+
+--
+-- Name: followers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.followers_id_seq', 19, true);
 
 
 --
 -- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.likes_id_seq', 29, true);
+SELECT pg_catalog.setval('public.likes_id_seq', 31, true);
 
 
 --
 -- Name: metadatas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metadatas_id_seq', 17, true);
+SELECT pg_catalog.setval('public.metadatas_id_seq', 18, true);
 
 
 --
 -- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.posts_id_seq', 35, true);
+SELECT pg_catalog.setval('public.posts_id_seq', 36, true);
 
 
 --
@@ -559,14 +633,14 @@ SELECT pg_catalog.setval('public.sessions_id_seq', 10, true);
 -- Name: tags_Posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tags_Posts_id_seq"', 24, true);
+SELECT pg_catalog.setval('public."tags_Posts_id_seq"', 25, true);
 
 
 --
 -- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tags_id_seq', 12, true);
+SELECT pg_catalog.setval('public.tags_id_seq', 13, true);
 
 
 --
@@ -582,6 +656,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 10, true);
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: followers followers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT followers_pkey PRIMARY KEY (id);
 
 
 --
@@ -694,6 +776,22 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT "comments_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: followers followers_followerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT "followers_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: followers followers_followingId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.followers
+    ADD CONSTRAINT "followers_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
