@@ -46,9 +46,11 @@ export async function postPublication(req, res) {
 
 export async function showPosts(req, res) {
   try {
+    const { session } = res.locals;
+
     const {
       rows: userPostList
-    } = await postRepository.getPosts();
+    } = await postRepository.getPosts(session.userId);
     res.status(200).send(userPostList);
   } catch(e) {
     
@@ -58,11 +60,12 @@ export async function showPosts(req, res) {
 
 export async function showPostsOffset(req, res) {
   try {
+    const { session } = res.locals;
     const { offset } = req.params;
 
     const {
       rows: userPostList
-    } = await postRepository.getPosts(offset);
+    } = await postRepository.getPosts(session.userId, offset);
 
     res.status(200).send(userPostList);
   } catch(e) {

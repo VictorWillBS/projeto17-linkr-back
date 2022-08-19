@@ -34,7 +34,7 @@ async function postMetadata(url, title, description, image) {
   );
 }
 
-async function getPosts(offset) {
+async function getPosts(userId, offset) {
   let offSetParams;
 
   if(offset){
@@ -62,8 +62,11 @@ async function getPosts(offset) {
     posts.url = metadatas.url
     JOIN users ON
     posts."userId" = users.id
+	  JOIN followers ON
+	  followers."followingId" = posts."userId"
     LEFT JOIN "tags_Posts" ON
     posts.id = "tags_Posts"."postId"
+	  WHERE followers."followerId" = $1
     GROUP BY
       posts."id",
       posts."userId",
@@ -79,7 +82,7 @@ async function getPosts(offset) {
     ORDER BY posts."createdAt"
     DESC LIMIT 10
     ${offSetParams}
-  `);
+  `, [userId]);
 }
 
 async function setPostsById(id, content) {
