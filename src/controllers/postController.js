@@ -80,7 +80,7 @@ export async function editPosts(req, res) {
 
     const {
       rows: postList
-    } = await postRepository.getPosts();
+    } = await postRepository.getAllPosts();
     
     const userPostList = postList.filter(post =>
       post.userId === session.userId
@@ -116,7 +116,7 @@ export async function deletePosts(req, res) {
     
     const {
       rows: postList
-    } = await postRepository.getPosts();
+    } = await postRepository.getAllPosts();
     
     const userPostList = postList.filter(post =>
       post.userId === session.userId
