@@ -65,6 +65,13 @@ CREATE TABLE comments (
 	"postId" INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+--Reposts table creation
+CREATE TABLE reposts (
+	id SERIAL PRIMARY KEY,
+	"postId" INTEGER NOT NULL REFERENCES posts(id),
+	"userId" INTEGER NOT NULL REFERENCES users(id)
+);
+
 --Followers table creation
 CREATE TABLE followers (
 	id SERIAL PRIMARY KEY,
