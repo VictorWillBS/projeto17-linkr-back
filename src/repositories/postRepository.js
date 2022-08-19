@@ -85,6 +85,45 @@ async function getPosts(userId, offset) {
   `, [userId]);
 }
 
+async function getAllPosts() {
+  return connection.query(
+    `
+    SELECT
+      posts."id" AS "postId",
+      posts."userId" AS "userId",
+      users."userName" AS "userName",
+      users.image AS "userImage",
+      posts.content AS "postContent",
+      posts.url AS url,
+      metadatas.id AS "urlId",
+      metadatas.title AS "urlTitle",
+      metadatas.description AS "urlDescription",
+      metadatas.image AS "urlImage",
+      JSON_AGG("tags_Posts"."tagName") AS "tags"
+    FROM posts
+    JOIN metadatas ON
+    posts.url = metadatas.url
+    JOIN users ON
+    posts."userId" = users.id
+    LEFT JOIN "tags_Posts" ON
+    posts.id = "tags_Posts"."postId"
+    GROUP BY
+      posts."id",
+      posts."userId",
+      users."userName",
+      users.image,
+      posts.content,
+      posts.url,
+      metadatas.id,
+      metadatas.title,
+      metadatas.description,
+      metadatas.image,
+	  posts."createdAt"
+    ORDER BY posts."createdAt"
+    DESC
+  `);
+}
+
 async function setPostsById(id, content) {
   return connection.query(`
     UPDATE posts SET
@@ -142,6 +181,7 @@ const postRepository = {
   postPublicationFull,
   postMetadata,
   getPosts,
+  getAllPosts,
   getMetadatas,
   getTagIdByNameTag,
   postTag,
