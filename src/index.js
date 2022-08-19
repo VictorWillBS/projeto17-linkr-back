@@ -7,6 +7,7 @@ import likeRouter from "./routes/likeRouter.js";
 import postRouter from "./routes/postRouter.js";
 import tagsRouter from "./routes/tagsRouter.js";
 import userRouter from "./routes/userRouter.js";
+import repostRouter from "./routes/repostRouter.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ server.use(tagsRouter);
 server.use(userRouter);
 server.use(likeRouter);
 server.use(commentRouter);
+server.use(repostRouter);
 
 server.listen(process.env.PORT, () =>
   console.log("Server is listening." + process.env.PORT)
